@@ -41,11 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
       ),
       body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: 16),
-              Flexible(
-                child: Padding(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Enter Email Address and Password to Login.',
@@ -58,121 +58,121 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 16),
-              TextInput(
-                textEditingController: emailController,
-                hintText: 'Email Address',
-                icon: Icons.email,
-                imeAction: TextInputAction.next,
-                isEnabled: !isLoading,
-              ),
-              SizedBox(height: 16),
-              TextInput(
-                textEditingController: passwordController,
-                hintText: 'Password',
-                icon: Icons.password,
-                isPasswordField: true,
-                isEnabled: !isLoading,
-              ),
-              SizedBox(height: 2),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
-                    onPressed: () {
-                      if(isLoading) return;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => ForgotPasswordScreen())
-                      );
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: primaryThemeColor,
-                        fontSize: 14,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.normal
-                      ),
-                    ),
-                  ),
+                SizedBox(height: 16),
+                TextInput(
+                  textEditingController: emailController,
+                  hintText: 'Email Address',
+                  icon: Icons.email,
+                  imeAction: TextInputAction.next,
+                  isEnabled: !isLoading,
                 ),
-              ),
-              SizedBox(height: 16),
-              Consumer<AuthProvider>(
-                builder: (context, authProvider, child) {
-                  return LoadingButton(
-                    title: 'Login',
-                    isLoading: isLoading,
-                    onTap: () {
-                      if(isLoading) return;
-
-                      setState(() {
-                        isLoading = true;
-                      });
-                      authProvider.login(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                        onSuccess: () {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (_) => DashboardScreen())
-                          );
-                        },
-                        onError: () {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        }
-                      );
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Text(
-                      'Don\'t have an account? ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.normal
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
+                SizedBox(height: 16),
+                TextInput(
+                  textEditingController: passwordController,
+                  hintText: 'Password',
+                  icon: Icons.password,
+                  isPasswordField: true,
+                  isEnabled: !isLoading,
+                ),
+                SizedBox(height: 2),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
                         if(isLoading) return;
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => RegisterScreen())
+                            MaterialPageRoute(builder: (_) => ForgotPasswordScreen())
                         );
                       },
                       child: Text(
-                        'Sign Up!',
-                        textAlign: TextAlign.center,
+                        'Forgot Password?',
                         style: TextStyle(
                           color: primaryThemeColor,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.normal
                         ),
                       ),
                     ),
-                  ]
+                  ),
                 ),
-              ),
-              SizedBox(height: 16),
-            ],
+                SizedBox(height: 16),
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    return LoadingButton(
+                      title: 'Login',
+                      isLoading: isLoading,
+                      onTap: () {
+                        if(isLoading) return;
+            
+                        setState(() {
+                          isLoading = true;
+                        });
+                        authProvider.login(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          onSuccess: () {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => DashboardScreen())
+                            );
+                          },
+                          onError: () {
+                            setState(() {
+                              isLoading = false;
+                            });
+                          }
+                        );
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Don\'t have an account? ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.normal
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if(isLoading) return;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => RegisterScreen())
+                          );
+                        },
+                        child: Text(
+                          'Sign Up!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: primaryThemeColor,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.normal
+                          ),
+                        ),
+                      ),
+                    ]
+                  ),
+                ),
+                SizedBox(height: 16),
+              ],
+            ),
           )
       ),
     );

@@ -46,11 +46,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         centerTitle: true,
       ),
       body: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(height: 16),
-              Flexible(
-                child: Padding(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     'Please enter your registered email address to receive a password reset link.',
@@ -63,49 +63,49 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 16),
-              TextInput(
-                textEditingController: emailController,
-                hintText: 'Email Address',
-                icon: Icons.email,
-                imeAction: TextInputAction.done,
-                isEnabled: !isLoading,
-              ),
-              SizedBox(height: 16),
-              Consumer<AuthProvider>(
-                builder: (context, authProvider, child) {
-                  return LoadingButton(
-                    title: 'Forgot Password',
-                    isLoading: isLoading,
-                    onTap: () {
-                      if (isLoading) return;
+                SizedBox(height: 16),
+                TextInput(
+                  textEditingController: emailController,
+                  hintText: 'Email Address',
+                  icon: Icons.email,
+                  imeAction: TextInputAction.done,
+                  isEnabled: !isLoading,
+                ),
+                SizedBox(height: 16),
+                Consumer<AuthProvider>(
+                  builder: (context, authProvider, child) {
+                    return LoadingButton(
+                      title: 'Forgot Password',
+                      isLoading: isLoading,
+                      onTap: () {
+                        if (isLoading) return;
 
-                      setState(() {
-                        isLoading = true;
-                      });
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                      authProvider.forgotPassword(
-                          email: emailController.text.trim(),
-                          onSuccess: (){
-                            setState(() {
-                              isLoading = false;
-                            });
+                        authProvider.forgotPassword(
+                            email: emailController.text.trim(),
+                            onSuccess: (){
+                              setState(() {
+                                isLoading = false;
+                              });
 
-                            Navigator.pop(context);
-                          },
-                          onError: (){
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
-                      );
-                    },
-                  );
-                }
-              ),
-              SizedBox(height: 16)
-            ],
+                              Navigator.pop(context);
+                            },
+                            onError: (){
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                        );
+                      },
+                    );
+                  }
+                ),
+                SizedBox(height: 16)
+              ],
+            ),
           )
       ),
     );
