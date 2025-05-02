@@ -1,4 +1,5 @@
 import 'package:expense_track/providerss/auth_provider.dart';
+import 'package:expense_track/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -37,11 +38,32 @@ class _SplashScreenState extends State<SplashScreen> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(child: Text('Splash Screen'))
-          ],
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/images/appstore.png',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.fill,
+                ),
+              ),
+
+              Text(
+                'ExpenseTrack',
+                style: TextStyle(
+                  color: primaryThemeColor,
+                  fontSize: 30,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+
+              SizedBox(height: 50)
+            ]
+          ),
         ),
       ),
     );

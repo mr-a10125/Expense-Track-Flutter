@@ -31,7 +31,7 @@ class DashboardScreen extends StatelessWidget {
                     onTap: () {
                       authProvider.logout();
                     },
-                    child: Text('Sign out')
+                    child: Text('Sign out ${authProvider.currentUser?.email}')
                 );
               },
             ),
