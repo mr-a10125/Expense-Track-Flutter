@@ -57,7 +57,9 @@ class AuthProvider extends ChangeNotifier {
     }
 
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      await userCredential.user?.updateDisplayName(userName);
+      await userCredential.user?.reload();
       onSuccess();
     } on FirebaseAuthException catch (e) {
       final message = e.message ?? 'Unknown error occurred';
@@ -92,8 +94,17 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> logout() async {
-    await _auth.signOut();
-    notifyListeners();
+  Future<void> logout({
+    required VoidCallback onSuccess
+  }) async {
+    try {
+      await _auth.signOut();
+      onSuccess();
+    } on FirebaseException catch(e) {
+      final message = e.message ?? 'Unknown error occurred';
+      showErrorToast(msg: "Error: $message");
+    } finally {
+      notifyListeners();
+    }
   }
 }

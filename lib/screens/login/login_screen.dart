@@ -1,7 +1,6 @@
 import 'package:expense_track/providerss/auth_provider.dart';
 import 'package:expense_track/utils/widget/loading_button.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
 import '../../utils/widget/text_input.dart';
