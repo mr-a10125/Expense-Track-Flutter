@@ -1,5 +1,6 @@
 import 'package:expense_track/providerss/auth_provider.dart';
 import 'package:expense_track/providerss/firestore_provider.dart';
+import 'package:expense_track/screens/dashboard/delete_dialog.dart';
 import 'package:expense_track/screens/login/login_screen.dart';
 import 'package:expense_track/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -48,13 +49,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var userExpenses = Provider.of<FireStoreProvider>(context).userExpenses;
-    print(userExpenses);
-    
+
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: userExpenses.isEmpty?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
+        backgroundColor: userExpenses.length < 2?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           'Dashboard',
@@ -123,14 +123,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   pathBackgroundColor: Colors.black
               ),
             ),
-          ):userExpenses.isNotEmpty?ListView.builder(
+          ):userExpenses.length > 1?ListView.builder(
             itemCount: userExpenses.length,
             itemBuilder: (BuildContext context, int index) {
               final record = userExpenses[index];
               return index == 0?Container(
                 width: double.infinity,
                 height: 150,
-                color: userExpenses.isEmpty?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
+                color: userExpenses.length < 2?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
                 child: Stack(
                   children: [
                     Center(
@@ -185,6 +185,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                       onDeletePress: (String str) {
                         debugPrint(str);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteDialog(id: str);
+                            },
+                          barrierDismissible: false
+                        ).then((value){
+                          if(value) {
+                            callFireStoreData();
+                          }
+                        });
                       },
               );
             },
@@ -192,7 +203,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               :SizedBox(
                 height: height,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 180),
+                  padding: EdgeInsets.only(bottom: 60),
                   child: Center(child: Text('No Data Available.'))),
           )
       ),

@@ -93,7 +93,7 @@ class FireStoreProvider extends ChangeNotifier {
         'date': date,
       };
 
-      await FirebaseFirestore.instance
+      await _firestore
           .collection('expenses')
           .doc(uid)
           .collection('records')
@@ -108,6 +108,28 @@ class FireStoreProvider extends ChangeNotifier {
       onError();
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<void> deleteFireStoreData({
+    required String uid,
+    required String recordId,
+    required VoidCallback onSuccess,
+    required VoidCallback onError,
+  }) async {
+    try {
+      await _firestore
+          .collection('expenses')
+          .doc(uid)
+          .collection('records')
+          .doc(recordId)
+          .delete();
+
+      await getFireStoreData(uid);
+      onSuccess();
+    } catch (e) {
+      debugPrint("Error deleting document: $e");
+      onError();
     }
   }
 }
