@@ -4,6 +4,7 @@ import 'package:expense_track/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_expense.dart';
+import 'expense_item.dart';
 import 'navigation_drawer.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: primaryThemeColor,
+        backgroundColor: Colors.red,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           'Dashboard',
@@ -74,12 +75,72 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
       body: SafeArea(
-          child: Column(
-            children: [
-              Center(
-                child: Text('Hello'),
-              )
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  color: Colors.red,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Icon(
+                          Icons.show_chart,
+                          size: 150,
+                          color: Colors.white30,
+                        ),
+                      ),
+
+                      Center(
+                        child: Text(
+                          'Overspending',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                ExpenseItem(
+                  onEditPress: (String str) {
+                    showModalBottomSheet<dynamic>(
+                        context: context,
+                        backgroundColor: backgroundColor,
+                        builder: (context) => AddExpense(),
+                        isScrollControlled: true,
+                        barrierLabel: 'Add Expense',
+                        isDismissible: false,
+                        showDragHandle: true
+                    );
+                  },
+                  onDeletePress: (String str) {
+                    debugPrint(str);
+                  },
+                ),
+                ExpenseItem(
+                  onEditPress: (String str) {
+                    showModalBottomSheet<dynamic>(
+                        context: context,
+                        backgroundColor: backgroundColor,
+                        builder: (context) => AddExpense(),
+                        isScrollControlled: true,
+                        barrierLabel: 'Add Expense',
+                        isDismissible: false,
+                        showDragHandle: true
+                    );
+                  },
+                  onDeletePress: (String str) {
+                    debugPrint(str);
+                  },
+                )
+              ],
+            ),
           )
       ),
     );
