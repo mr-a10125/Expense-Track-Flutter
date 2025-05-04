@@ -49,6 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var userExpenses = Provider.of<FireStoreProvider>(context).userExpenses;
+    debugPrint('$userExpenses');
 
     return Scaffold(
       key: _scaffoldKey,
@@ -96,11 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             barrierLabel: 'Add Expense',
             isDismissible: true,
             showDragHandle: true
-          ).then((value){
-            if (value != null && value) {
-              callFireStoreData();
-            }
-          });
+          );
         },
         backgroundColor: primaryThemeColor,
         child: Icon(
@@ -175,13 +172,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                             isScrollControlled: true,
                             barrierLabel: 'Add Expense',
-                            isDismissible: false,
+                            isDismissible: true,
                             showDragHandle: true
-                        ).then((value){
-                          if (value != null && value) {
-                            callFireStoreData();
-                          }
-                        });
+                        );
                       },
                       onDeletePress: (String str) {
                         debugPrint(str);
@@ -193,7 +186,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           barrierDismissible: false
                         ).then((value){
                           if(value) {
-                            callFireStoreData();
+                            // callFireStoreData();
                           }
                         });
                       },

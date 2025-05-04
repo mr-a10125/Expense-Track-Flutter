@@ -38,7 +38,6 @@ class FireStoreProvider extends ChangeNotifier {
       double amount = double.tryParse(expense['amount']?.toString() ?? '') ?? 0.0;
       String type = expense['type']?.toString() ?? '';
 
-      // Add to total income or expenses based on type
       if (type == 'Income') {
         totalIncome += amount;
       } else if (type == 'Expense') {
@@ -101,6 +100,10 @@ class FireStoreProvider extends ChangeNotifier {
           .set(record);
 
       onSuccess();
+
+      final index = userExpenses.indexWhere((item) => item['id'] == id);
+      index != -1? userExpenses[index] = record: userExpenses.insert(1, record);
+      calculateSpending();
     } on FirebaseException catch (e) {
       final message = e.message ?? 'Unknown error occurred';
       showErrorToast(msg: message);
@@ -127,9 +130,15 @@ class FireStoreProvider extends ChangeNotifier {
 
       await getFireStoreData(uid);
       onSuccess();
+      removeExpenseById(recordId);
     } catch (e) {
       debugPrint("Error deleting document: $e");
       onError();
     }
+  }
+
+  void removeExpenseById(String id) {
+    userExpenses.removeWhere((item) => item['id'] == id);
+    notifyListeners();
   }
 }
