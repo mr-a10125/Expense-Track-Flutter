@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../constants.dart';
 
@@ -10,6 +11,8 @@ class TextInput extends StatefulWidget {
   final bool isEnabled;
   final IconData icon;
   final TextInputAction imeAction;
+  final bool isNumberOnly;
+  final int maxLength;
 
   const TextInput({
     super.key,
@@ -18,7 +21,9 @@ class TextInput extends StatefulWidget {
     required this.hintText,
     this.isPasswordField = false,
     this.isEnabled = true,
-    this.imeAction = TextInputAction.done
+    this.imeAction = TextInputAction.done,
+    this.isNumberOnly = false,
+    this.maxLength = 100
   });
 
   @override
@@ -64,6 +69,13 @@ class _TextInputState extends State<TextInput> {
             fontFamily: 'Poppins',
             fontWeight: FontWeight.normal
         ),
+        keyboardType: widget.isNumberOnly
+            ? TextInputType.number
+            : TextInputType.text,
+        inputFormatters: widget.isNumberOnly
+            ? [FilteringTextInputFormatter.digitsOnly]
+            : null,
+        maxLength: widget.maxLength,
       ),
     );
   }

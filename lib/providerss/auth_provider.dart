@@ -83,7 +83,7 @@ class AuthProvider extends ChangeNotifier {
     }
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await _auth.sendPasswordResetEmail(email: email);
       showSuccessToast(msg: "Password reset link sent to $email");
       onSuccess();
     } on FirebaseAuthException catch (e) {

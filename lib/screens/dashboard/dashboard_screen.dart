@@ -1,8 +1,10 @@
 import 'package:expense_track/providerss/auth_provider.dart';
+import 'package:expense_track/providerss/firestore_provider.dart';
 import 'package:expense_track/screens/login/login_screen.dart';
 import 'package:expense_track/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'add_expense.dart';
 import 'expense_item.dart';
 import 'navigation_drawer.dart';
@@ -18,7 +20,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+
+    if(!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final fireStoreProvider = Provider.of<FireStoreProvider>(context, listen: false);
+
+      final uid = authProvider.currentUser?.uid ?? "";
+      fireStoreProvider.getFireStoreData(uid);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var userExpenses = Provider.of<FireStoreProvider>(context).userExpenses;
+    
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
@@ -56,16 +75,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       drawer: const NavigationDrawerDesign(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet<dynamic>(
+        onPressed: () async {
+          await showModalBottomSheet<dynamic>(
             context: context,
             backgroundColor: backgroundColor,
-            builder: (context) => AddExpense(),
+            builder: (context) => AddExpense(id: Uuid().v4()),
             isScrollControlled: true,
             barrierLabel: 'Add Expense',
-            isDismissible: false,
+            isDismissible: true,
             showDragHandle: true
           );
+
+          debugPrint('closed');
         },
         backgroundColor: primaryThemeColor,
         child: Icon(
@@ -76,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
+            child: userExpenses.isNotEmpty?Column(
               children: [
                 Container(
                   width: double.infinity,
@@ -107,39 +128,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
 
-                ExpenseItem(
-                  onEditPress: (String str) {
-                    showModalBottomSheet<dynamic>(
-                        context: context,
-                        backgroundColor: backgroundColor,
-                        builder: (context) => AddExpense(),
-                        isScrollControlled: true,
-                        barrierLabel: 'Add Expense',
-                        isDismissible: false,
-                        showDragHandle: true
-                    );
-                  },
-                  onDeletePress: (String str) {
-                    debugPrint(str);
-                  },
-                ),
-                ExpenseItem(
-                  onEditPress: (String str) {
-                    showModalBottomSheet<dynamic>(
-                        context: context,
-                        backgroundColor: backgroundColor,
-                        builder: (context) => AddExpense(),
-                        isScrollControlled: true,
-                        barrierLabel: 'Add Expense',
-                        isDismissible: false,
-                        showDragHandle: true
-                    );
-                  },
-                  onDeletePress: (String str) {
-                    debugPrint(str);
-                  },
-                )
+                // ListView.builder(
+                //   physics: NeverScrollableScrollPhysics(),
+                //   itemCount: userExpenses.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     // final record = userExpenses[index];
+                //     return ExpenseItem(
+                //       onEditPress: (String str) {
+                //         showModalBottomSheet<dynamic>(
+                //             context: context,
+                //             backgroundColor: backgroundColor,
+                //             builder: (context) => AddExpense(id: Uuid().v4()),
+                //             isScrollControlled: true,
+                //             barrierLabel: 'Add Expense',
+                //             isDismissible: false,
+                //             showDragHandle: true
+                //         );
+                //       },
+                //       onDeletePress: (String str) {
+                //         debugPrint(str);
+                //       },
+                //     );
+                //   },
+                // ),
               ],
+            )
+                :SizedBox(
+                  height: height,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 180),
+                    child: Center(child: Text('No Data Available.'))),
             ),
           )
       ),

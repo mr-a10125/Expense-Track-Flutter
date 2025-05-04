@@ -1,4 +1,5 @@
 import 'package:expense_track/providerss/auth_provider.dart';
+import 'package:expense_track/providerss/firestore_provider.dart';
 import 'package:expense_track/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,13 @@ void main() async {
   );
   await Firebase.initializeApp();
 
-  runApp(ChangeNotifierProvider(
-      create: (context) => AuthProvider(),
-      child: const MyApp())
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => FireStoreProvider()),
+      ChangeNotifierProvider(create: (context) => AuthProvider())
+    ],
+    child: const MyApp(),
+  )
   );
 }
 
