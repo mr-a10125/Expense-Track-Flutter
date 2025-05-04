@@ -9,10 +9,18 @@ import '../../utils/widget/text_input.dart';
 
 class AddExpense extends StatefulWidget {
   final String id;
+  final String? type;
+  final String? amount;
+  final String? date;
+  final String? note;
 
   const AddExpense({
     super.key,
-    required this.id
+    required this.id,
+    this.type,
+    this.amount,
+    this.date,
+    this.note
   });
 
   @override
@@ -26,6 +34,25 @@ class _AddExpenseState extends State<AddExpense> {
   final TextEditingController notesController = TextEditingController();
   int selectedType = 0;
   DateTime selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    if(widget.type != null && widget.type?.isNotEmpty == true) {
+      setState(() {
+        selectedType = widget.type == 'Income'?0:1;
+      });
+    }
+    if(widget.amount?.isNotEmpty == true && widget.amount != null) {
+      amountController.text = widget.amount??'';
+    }
+    if(widget.date?.isNotEmpty == true && widget.date != null) {
+      selectedDate = DateTime.parse(widget.date??'');
+    }
+    if(widget.note?.isNotEmpty == true && widget.note != null) {
+      notesController.text = widget.note??'';
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,11 +276,12 @@ class _AddExpenseState extends State<AddExpense> {
                       fireStoreProvider.addFireStoreData(
                           uid: authProvider.currentUser?.uid??"",
                           id: widget.id,
+                          type: selectedType==0?'Income':'Expense',
                           amount: amountController.text.trim(),
                           notes: notesController.text.trim(),
                           date: DateFormat('yyyy-MM-dd').format(selectedDate),
                           onSuccess: () {
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop(true);
                             setState(() {
                               isLoading = false;
                             });

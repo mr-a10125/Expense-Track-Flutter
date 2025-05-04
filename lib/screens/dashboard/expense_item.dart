@@ -4,11 +4,21 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ExpenseItem extends StatelessWidget {
 
+  final String id;
+  final String type;
+  final String amount;
+  final String date;
+  final String note;
   final Function(String str) onEditPress;
   final Function(String str) onDeletePress;
 
   const ExpenseItem({
     super.key,
+    required this.id,
+    required this.type,
+    required this.amount,
+    required this.date,
+    required this.note,
     required this.onEditPress,
     required this.onDeletePress
   });
@@ -25,7 +35,7 @@ class ExpenseItem extends StatelessWidget {
                 children: [
                   SlidableAction(
                     onPressed: (context) {
-                      onEditPress('OnEdit');
+                      onEditPress(id);
                     },
                     backgroundColor: primaryThemeColor,
                     foregroundColor: Colors.white,
@@ -34,7 +44,7 @@ class ExpenseItem extends StatelessWidget {
                   ),
                   SlidableAction(
                     onPressed: (context) {
-                      onDeletePress('OnDelete');
+                      onDeletePress(id);
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
@@ -54,9 +64,9 @@ class ExpenseItem extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Income',
+                            type,
                             style: TextStyle(
-                                color: primaryThemeColor,
+                                color: type=='Income'?primaryThemeColor:Colors.red,
                                 fontSize: 16,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.bold
@@ -66,9 +76,9 @@ class ExpenseItem extends StatelessWidget {
                       ),
 
                       Text(
-                        '₹100',
+                        '₹$amount',
                         style: TextStyle(
-                            color: primaryThemeColor,
+                            color: Colors.black87,
                             fontSize: 16,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold
@@ -80,7 +90,7 @@ class ExpenseItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Received money from the salary. Received money from the salary.',
+                      note,
                       style: TextStyle(
                           color: hintTextColor,
                           fontSize: 14,
@@ -93,7 +103,7 @@ class ExpenseItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      '2025-05-04',
+                      date,
                       style: TextStyle(
                           color: hintTextColor,
                           fontSize: 14,

@@ -16,13 +16,15 @@ class FireStoreProvider extends ChangeNotifier {
         .get();
 
     userExpenses = snapshot.docs.map((doc) => doc.data()).toList();
-
+    userExpenses = userExpenses.reversed.toList();
+    userExpenses.insert(0, { 'dummy': 'item' });
     notifyListeners();
   }
 
   Future<void> addFireStoreData({
     required String uid,
     required String id,
+    required String type,
     required String amount,
     required String notes,
     required String date,
@@ -44,6 +46,7 @@ class FireStoreProvider extends ChangeNotifier {
     try {
       final record = {
         'id': id,
+        'type': type,
         'amount': amount,
         'notes': notes,
         'date': date,

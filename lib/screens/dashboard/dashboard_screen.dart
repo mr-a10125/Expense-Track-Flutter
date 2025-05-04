@@ -3,6 +3,7 @@ import 'package:expense_track/providerss/firestore_provider.dart';
 import 'package:expense_track/screens/login/login_screen.dart';
 import 'package:expense_track/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'add_expense.dart';
@@ -18,18 +19,28 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    callFireStoreData();
+  }
 
+  void callFireStoreData() async {
     if(!mounted) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    setState(() {
+      isLoading = true;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       final fireStoreProvider = Provider.of<FireStoreProvider>(context, listen: false);
 
       final uid = authProvider.currentUser?.uid ?? "";
-      fireStoreProvider.getFireStoreData(uid);
+      await fireStoreProvider.getFireStoreData(uid);
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -84,9 +95,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             barrierLabel: 'Add Expense',
             isDismissible: true,
             showDragHandle: true
-          );
-
-          debugPrint('closed');
+          ).then((value){
+            if (value != null && value) {
+              callFireStoreData();
+            }
+          });
         },
         backgroundColor: primaryThemeColor,
         child: Icon(
@@ -96,69 +109,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
       body: SafeArea(
-          child: SingleChildScrollView(
-            child: userExpenses.isNotEmpty?Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 150,
-                  color: Colors.red,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Icon(
-                          Icons.show_chart,
-                          size: 150,
-                          color: Colors.white30,
-                        ),
-                      ),
-
-                      Center(
-                        child: Text(
-                          'Overspending',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // ListView.builder(
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemCount: userExpenses.length,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     // final record = userExpenses[index];
-                //     return ExpenseItem(
-                //       onEditPress: (String str) {
-                //         showModalBottomSheet<dynamic>(
-                //             context: context,
-                //             backgroundColor: backgroundColor,
-                //             builder: (context) => AddExpense(id: Uuid().v4()),
-                //             isScrollControlled: true,
-                //             barrierLabel: 'Add Expense',
-                //             isDismissible: false,
-                //             showDragHandle: true
-                //         );
-                //       },
-                //       onDeletePress: (String str) {
-                //         debugPrint(str);
-                //       },
-                //     );
-                //   },
-                // ),
-              ],
-            )
-                :SizedBox(
-                  height: height,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 180),
-                    child: Center(child: Text('No Data Available.'))),
+          child: isLoading?Center(
+            child: Container(
+              padding: EdgeInsets.only(bottom: 80),
+              width: 80,
+              height: 160,
+              child: LoadingIndicator(
+                  indicatorType: Indicator.lineScalePulseOut,
+                  colors: [primaryThemeColor],
+                  strokeWidth: 2,
+                  backgroundColor: backgroundColor,
+                  pathBackgroundColor: Colors.black
+              ),
             ),
+          ):userExpenses.isNotEmpty?ListView.builder(
+            itemCount: userExpenses.length,
+            itemBuilder: (BuildContext context, int index) {
+              final record = userExpenses[index];
+              return index == 0?Container(
+                width: double.infinity,
+                height: 150,
+                color: Colors.red,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Icon(
+                        Icons.show_chart,
+                        size: 150,
+                        color: Colors.white30,
+                      ),
+                    ),
+
+                    Center(
+                      child: Text(
+                        'Overspending',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+                  : ExpenseItem(
+                      id: record['id'],
+                      type: record['type'],
+                      amount: record['amount'],
+                      date: record['date'],
+                      note: record['notes'],
+                      onEditPress: (String str) {
+                        showModalBottomSheet<dynamic>(
+                            context: context,
+                            backgroundColor: backgroundColor,
+                            builder: (context) =>
+                                AddExpense(
+                                  id: record['id'],
+                                  type: record['type'],
+                                  amount: record['amount'],
+                                  date: record['date'],
+                                  note: record['notes'],
+                                ),
+                            isScrollControlled: true,
+                            barrierLabel: 'Add Expense',
+                            isDismissible: false,
+                            showDragHandle: true
+                        ).then((value){
+                          if (value != null && value) {
+                            callFireStoreData();
+                          }
+                        });
+                      },
+                      onDeletePress: (String str) {
+                        debugPrint(str);
+                      },
+              );
+            },
+          )
+              :SizedBox(
+                height: height,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 180),
+                  child: Center(child: Text('No Data Available.'))),
           )
       ),
     );
