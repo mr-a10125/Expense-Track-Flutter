@@ -53,6 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: userExpenses.length < 2?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
@@ -152,15 +153,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                           ),
 
-                          Text(
-                            '\u{20B9}${userExpenses.length < 2?'':userExpenses[0]['type'] == 'Overspending'?'-':'+'}${userExpenses[index]['amount']}',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.currency_rupee, size: 20, color: Colors.white,),
+                              Text(
+                                '${userExpenses.length < 2?'':userExpenses[0]['type'] == 'Overspending'?'-':'+'}${userExpenses[index]['amount']}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       )
                     ),
