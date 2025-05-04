@@ -48,12 +48,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var userExpenses = Provider.of<FireStoreProvider>(context).userExpenses;
+    print(userExpenses);
     
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: userExpenses.isEmpty?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           'Dashboard',
@@ -129,7 +130,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return index == 0?Container(
                 width: double.infinity,
                 height: 150,
-                color: Colors.red,
+                color: userExpenses.isEmpty?primaryThemeColor:userExpenses[0]['type'] == 'Overspending'?Colors.red:Colors.green,
                 child: Stack(
                   children: [
                     Center(
@@ -142,7 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     Center(
                       child: Text(
-                        'Overspending',
+                        userExpenses[index]['type'],
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_track/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uuid/uuid.dart';
 
 class FireStoreProvider extends ChangeNotifier {
 
@@ -17,9 +16,51 @@ class FireStoreProvider extends ChangeNotifier {
 
     userExpenses = snapshot.docs.map((doc) => doc.data()).toList();
     userExpenses = userExpenses.reversed.toList();
-    userExpenses.insert(0, { 'dummy': 'item' });
+
+    userExpenses.insert(0, {
+      'type': 'Overspending',
+      'amount': '0.0',
+      'notes': 'Overspending or Normal Spending'
+    });
+
+    calculateSpending();
+
     notifyListeners();
   }
+
+  void calculateSpending() {
+    double totalIncome = 0.0;
+    double totalExpenses = 0.0;
+
+    for (var expense in userExpenses) {
+      if (expense.containsKey('dummy')) continue;
+
+      double amount = double.tryParse(expense['amount']?.toString() ?? '') ?? 0.0;
+      String type = expense['type']?.toString() ?? '';
+
+      // Add to total income or expenses based on type
+      if (type == 'Income') {
+        totalIncome += amount;
+      } else if (type == 'Expense') {
+        totalExpenses += amount;
+      }
+    }
+
+    String overspendingType = 'Surplus';
+    String overspendingMessage = 'Normal Spending';
+    double spendingDifference = totalExpenses - totalIncome;
+
+    if (spendingDifference > 0) {
+      overspendingType = 'Overspending';
+      overspendingMessage = 'Overspending: \$${spendingDifference.toStringAsFixed(2)}';
+    }
+
+    // Update the dummy item with calculated spending information
+    userExpenses[0]['type'] = overspendingType;
+    userExpenses[0]['notes'] = overspendingMessage;
+    userExpenses[0]['amount'] = spendingDifference.toStringAsFixed(2);
+  }
+
 
   Future<void> addFireStoreData({
     required String uid,
@@ -60,7 +101,6 @@ class FireStoreProvider extends ChangeNotifier {
           .set(record);
 
       onSuccess();
-      notifyListeners();
     } on FirebaseException catch (e) {
       final message = e.message ?? 'Unknown error occurred';
       showErrorToast(msg: message);

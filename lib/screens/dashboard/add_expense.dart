@@ -94,6 +94,7 @@ class _AddExpenseState extends State<AddExpense> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    if(isLoading) return;
                     setState(() {
                       selectedType = 0;
                     });
@@ -120,6 +121,7 @@ class _AddExpenseState extends State<AddExpense> {
                 SizedBox(width: 80),
                 GestureDetector(
                   onTap: () {
+                    if(isLoading) return;
                     setState(() {
                       selectedType = 1;
                     });
@@ -195,6 +197,7 @@ class _AddExpenseState extends State<AddExpense> {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: GestureDetector(
                 onTap: () {
+                  if(isLoading) return;
                   _selectDate(context);
                 },
                 child: Container(
