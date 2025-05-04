@@ -139,15 +139,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
 
                     Center(
-                      child: Text(
-                        userExpenses[index]['type'],
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            userExpenses[index]['type'],
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+
+                          Text(
+                            '\u{20B9}${userExpenses.length < 2?'':userExpenses[0]['type'] == 'Overspending'?'-':'+'}${userExpenses[index]['amount']}',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      )
                     ),
                   ],
                 ),

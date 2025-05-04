@@ -19,7 +19,7 @@ class FireStoreProvider extends ChangeNotifier {
 
     userExpenses.insert(0, {
       'type': 'Overspending',
-      'amount': '0.0',
+      'amount': '0',
       'notes': 'Overspending or Normal Spending'
     });
 
@@ -29,13 +29,13 @@ class FireStoreProvider extends ChangeNotifier {
   }
 
   void calculateSpending() {
-    double totalIncome = 0.0;
-    double totalExpenses = 0.0;
+    int totalIncome = 0;
+    int totalExpenses = 0;
 
     for (var expense in userExpenses) {
       if (expense.containsKey('dummy')) continue;
 
-      double amount = double.tryParse(expense['amount']?.toString() ?? '') ?? 0.0;
+      int amount = int.tryParse(expense['amount']?.toString() ?? '') ?? 0;
       String type = expense['type']?.toString() ?? '';
 
       if (type == 'Income') {
@@ -47,17 +47,16 @@ class FireStoreProvider extends ChangeNotifier {
 
     String overspendingType = 'Surplus';
     String overspendingMessage = 'Normal Spending';
-    double spendingDifference = totalExpenses - totalIncome;
+    int spendingDifference = totalExpenses - totalIncome;
 
     if (spendingDifference > 0) {
       overspendingType = 'Overspending';
-      overspendingMessage = 'Overspending: \$${spendingDifference.toStringAsFixed(2)}';
+      overspendingMessage = 'Overspending: \$$spendingDifference';
     }
 
-    // Update the dummy item with calculated spending information
     userExpenses[0]['type'] = overspendingType;
     userExpenses[0]['notes'] = overspendingMessage;
-    userExpenses[0]['amount'] = spendingDifference.toStringAsFixed(2);
+    userExpenses[0]['amount'] = spendingDifference.abs().toString();
   }
 
 
