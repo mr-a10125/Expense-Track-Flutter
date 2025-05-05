@@ -184,6 +184,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       amount: record['amount'],
                       date: record['date'],
                       note: record['notes'],
+                      dividerIsVisible: index != userExpenses.length - 1,
                       onEditPress: (String str) {
                         showModalBottomSheet<dynamic>(
                             context: context,
@@ -203,7 +204,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             barrierLabel: 'Add Expense',
                             isDismissible: false,
                             showDragHandle: true,
-                            enableDrag: false,
+                            enableDrag: false
                         );
                       },
                       onDeletePress: (String str) {

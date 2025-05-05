@@ -11,6 +11,7 @@ class ExpenseItem extends StatelessWidget {
   final String note;
   final Function(String str) onEditPress;
   final Function(String str) onDeletePress;
+  final bool dividerIsVisible;
 
   const ExpenseItem({
     super.key,
@@ -20,7 +21,8 @@ class ExpenseItem extends StatelessWidget {
     required this.date,
     required this.note,
     required this.onEditPress,
-    required this.onDeletePress
+    required this.onDeletePress,
+    required this.dividerIsVisible
   });
 
   @override
@@ -119,7 +121,7 @@ class ExpenseItem extends StatelessWidget {
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Container(color: Colors.grey, height: 1, width: width,)
+          child: Container(color: dividerIsVisible?Colors.black12:Colors.transparent, height: 1, width: width,)
         ),
       ]
     );
