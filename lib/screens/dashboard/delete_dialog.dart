@@ -26,7 +26,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
           'Delete Expense',
           style: TextStyle(
               color: primaryThemeColor,
-              fontSize: 22,
+              fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold
           ),
@@ -56,8 +56,8 @@ class _DeleteDialogState extends State<DeleteDialog> {
                     'Close',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
+                        color: Colors.black54,
+                        fontSize: 17,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal
                     ),
@@ -68,7 +68,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
                 child: Consumer<FireStoreProvider>(
                   builder: (context, fireStoreProvider, child) {
                     return LoadingButton(
-                        title: "Yes",
+                        title: "Delete",
                         isLoading: isLoading,
                         onTap: () {
                           if(isLoading) return;

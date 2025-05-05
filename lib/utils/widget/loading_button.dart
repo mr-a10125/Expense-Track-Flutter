@@ -22,7 +22,7 @@ class LoadingButton extends StatelessWidget {
         onTap: onTap,
         child: Container(
           width: double.infinity,
-          height: 56.0,
+          height: 52.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: primaryThemeColor,
@@ -36,7 +36,7 @@ class LoadingButton extends StatelessWidget {
               title,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 17,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold
               ),

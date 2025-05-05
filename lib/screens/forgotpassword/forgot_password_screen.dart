@@ -28,7 +28,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           'Forgot Password',
           style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold
           ),
@@ -57,13 +57,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.black87,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 TextInput(
                   textEditingController: emailController,
                   hintText: 'Email Address',
@@ -71,7 +71,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   imeAction: TextInputAction.done,
                   isEnabled: !isLoading,
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     return LoadingButton(

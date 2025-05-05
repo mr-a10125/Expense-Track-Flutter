@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'Login',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 20,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.bold
           ),
@@ -51,13 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black87,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 TextInput(
                   textEditingController: emailController,
                   hintText: 'Email Address',
@@ -78,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTap: () {
                         if(isLoading) return;
                         Navigator.push(
                             context,
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 40),
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     return LoadingButton(
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black87,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.normal
                         ),
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: primaryThemeColor,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal
                           ),

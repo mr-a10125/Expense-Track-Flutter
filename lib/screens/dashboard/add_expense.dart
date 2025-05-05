@@ -68,7 +68,7 @@ class _AddExpenseState extends State<AddExpense> {
                   'Add Expense',
                   style: TextStyle(
                       color: primaryThemeColor,
-                      fontSize: 22,
+                      fontSize: 20,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold
                   ),
@@ -83,7 +83,7 @@ class _AddExpenseState extends State<AddExpense> {
                     'Select Type: ',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold
                     ),
@@ -101,23 +101,26 @@ class _AddExpenseState extends State<AddExpense> {
                         selectedType = 0;
                       });
                     },
-                    child: Row(
-                      children: [
-                        Icon(
-                          selectedType==0?Icons.check_circle_sharp:Icons.radio_button_unchecked_sharp,
-                          color: selectedType==0?primaryThemeColor:hintTextColor,
-                        ),
-                        SizedBox(width: 10,),
-                        Text(
-                          'Income',
-                          style: TextStyle(
-                              color: selectedType==0?primaryThemeColor:hintTextColor,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold
+                    child: Opacity(
+                      opacity: isLoading ? 0.5 : 1.0,
+                      child: Row(
+                        children: [
+                          Icon(
+                            selectedType==0?Icons.check_circle_sharp:Icons.radio_button_unchecked_sharp,
+                            color: selectedType==0?primaryThemeColor:hintTextColor,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 10,),
+                          Text(
+                            'Income',
+                            style: TextStyle(
+                                color: selectedType==0?primaryThemeColor:hintTextColor,
+                                fontSize: 15,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(width: 80),
@@ -128,23 +131,26 @@ class _AddExpenseState extends State<AddExpense> {
                         selectedType = 1;
                       });
                     },
-                    child: Row(
-                      children: [
-                        Icon(
-                          selectedType==1?Icons.check_circle_sharp:Icons.radio_button_unchecked_sharp,
-                          color: selectedType==1?primaryThemeColor:hintTextColor,
-                        ),
-                        SizedBox(width: 10,),
-                        Text(
-                          'Expense',
-                          style: TextStyle(
-                              color: selectedType==1?primaryThemeColor:hintTextColor,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold
+                    child: Opacity(
+                      opacity: isLoading ? 0.5 : 1.0,
+                      child: Row(
+                        children: [
+                          Icon(
+                            selectedType==1?Icons.check_circle_sharp:Icons.radio_button_unchecked_sharp,
+                            color: selectedType==1?primaryThemeColor:hintTextColor,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 10,),
+                          Text(
+                            'Expense',
+                            style: TextStyle(
+                                color: selectedType==1?primaryThemeColor:hintTextColor,
+                                fontSize: 15,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -160,7 +166,7 @@ class _AddExpenseState extends State<AddExpense> {
                     'Enter Amount: ',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold
                     ),
@@ -187,7 +193,7 @@ class _AddExpenseState extends State<AddExpense> {
                     'Select Date: ',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold
                     ),
@@ -204,10 +210,10 @@ class _AddExpenseState extends State<AddExpense> {
                   },
                   child: Container(
                     width: double.infinity,
-                    height: 56.0,
+                    height: 52.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey, width: 1),
+                      border: Border.all(color: isLoading?Colors.black12:Colors.grey, width: 1),
                     ),
                     child: Row(
                       children: [
@@ -217,8 +223,8 @@ class _AddExpenseState extends State<AddExpense> {
                             child: Text(
                               DateFormat('yyyy-MM-dd').format(selectedDate),
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
+                                  color: isLoading?Colors.black54:Colors.black,
+                                  fontSize: 15,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold
                               ),
@@ -230,7 +236,7 @@ class _AddExpenseState extends State<AddExpense> {
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Icon(
                             Icons.arrow_drop_down_circle,
-                            color: Colors.black87,
+                            color: isLoading?Colors.black12:Colors.black54,
                           ),
                         )
                       ]
@@ -248,7 +254,7 @@ class _AddExpenseState extends State<AddExpense> {
                     'Enter Note: ',
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold
                     ),
@@ -300,6 +306,23 @@ class _AddExpenseState extends State<AddExpense> {
                       }
                   );
                 }
+              ),
+              SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  if(isLoading) return;
+                  Navigator.of(context).pop(false);
+                },
+                child: Text(
+                  'Close',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.normal
+                  ),
+                ),
               )
             ],
           ),

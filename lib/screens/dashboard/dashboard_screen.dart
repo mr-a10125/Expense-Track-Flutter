@@ -62,7 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           'Dashboard',
           style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold
           ),
@@ -93,11 +93,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           await showModalBottomSheet<dynamic>(
             context: context,
             backgroundColor: backgroundColor,
-            builder: (context) => AddExpense(id: Uuid().v4()),
+            builder: (context) => PopScope(
+                canPop: false,
+                child: AddExpense(id: Uuid().v4())
+            ),
             isScrollControlled: true,
             barrierLabel: 'Add Expense',
             isDismissible: true,
-            showDragHandle: true
+            showDragHandle: true,
+            enableDrag: false
           );
         },
         backgroundColor: primaryThemeColor,
@@ -147,7 +151,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             userExpenses[index]['type'],
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 30,
+                                fontSize: 28,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.bold
                             ),
@@ -158,7 +162,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             children: [
                               Icon(Icons.currency_rupee, size: 20, color: Colors.white,),
                               Text(
-                                '${userExpenses.length < 2?'':userExpenses[0]['type'] == 'Overspending'?'-':'+'}${userExpenses[index]['amount']}',
+                                '${userExpenses.length < 2?'':userExpenses[0]['type'] == 'Overspending'?'-':'+'}${userExpenses[index]['amount']}  ',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -185,17 +189,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             context: context,
                             backgroundColor: backgroundColor,
                             builder: (context) =>
-                                AddExpense(
-                                  id: record['id'],
-                                  type: record['type'],
-                                  amount: record['amount'],
-                                  date: record['date'],
-                                  note: record['notes'],
+                                PopScope(
+                                  canPop: false,
+                                  child: AddExpense(
+                                    id: record['id'],
+                                    type: record['type'],
+                                    amount: record['amount'],
+                                    date: record['date'],
+                                    note: record['notes'],
+                                  ),
                                 ),
                             isScrollControlled: true,
                             barrierLabel: 'Add Expense',
-                            isDismissible: true,
-                            showDragHandle: true
+                            isDismissible: false,
+                            showDragHandle: true,
+                            enableDrag: false,
                         );
                       },
                       onDeletePress: (String str) {

@@ -45,7 +45,8 @@ class _TextInputState extends State<TextInput> {
           hintStyle: TextStyle(
               color: hintTextColor,
               fontFamily: 'Poppins',
-              fontStyle: FontStyle.italic
+              fontSize: 15,
+              fontStyle: FontStyle.normal
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -67,6 +68,7 @@ class _TextInputState extends State<TextInput> {
         enabled: widget.isEnabled,
         style: TextStyle(
             fontFamily: 'Poppins',
+            fontSize: 15,
             fontWeight: FontWeight.normal
         ),
         keyboardType: widget.isNumberOnly

@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'Register',
           style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 20,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold
           ),
@@ -59,13 +59,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black87,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 TextInput(
                   textEditingController: userNameController,
                   hintText: 'User Name',
@@ -89,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   isPasswordField: true,
                   isEnabled: !isLoading,
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     return LoadingButton(
@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black87,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal
                           ),
@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: primaryThemeColor,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.normal
                             ),
